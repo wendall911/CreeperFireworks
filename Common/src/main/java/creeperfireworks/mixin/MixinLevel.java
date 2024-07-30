@@ -3,6 +3,8 @@ package creeperfireworks.mixin;
 import java.util.List;
 import java.util.function.Predicate;
 
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -13,6 +15,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,11 +32,14 @@ public abstract class MixinLevel {
      * Limit explosion damage (configurable) to players, items and blocks. Any combination is OK.
      */
     @Inject(
-        method = "explode(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;DDDFZLnet/minecraft/world/level/Level$ExplosionInteraction;Z)Lnet/minecraft/world/level/Explosion;",
+        //method = "explode(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;Lnet/minecraft/world/phys/Vec3;FZLnet/minecraft/world/level/Level$ExplosionInteraction;)Lnet/minecraft/world/level/Explosion;",
+        //method = "explode(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;DDDFZLnet/minecraft/world/level/Level$ExplosionInteraction;)Lnet/minecraft/world/level/Explosion;",
+        method = "explode(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;DDDFZLnet/minecraft/world/level/Level$ExplosionInteraction;ZLnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/sounds/SoundEvent;)Lnet/minecraft/world/level/Explosion;",
+        //method = "explode(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;Lnet/minecraft/world/phys/Vec3;FZLnet/minecraft/world/level/Level$ExplosionInteraction;)Lnet/minecraft/world/level/Explosion;",
         at = @At("HEAD"),
         cancellable = true
     )
-    private void cf$explode(Entity entity, DamageSource damageSource, ExplosionDamageCalculator damageCalculator, double x, double y, double z, float radius, boolean fire, Level.ExplosionInteraction explosionInteraction, boolean animate, CallbackInfoReturnable<Explosion> cir) {
+    private void cf$explode(Entity entity, DamageSource damageSource, ExplosionDamageCalculator damageCalculator, double x, double y, double z, float radius, boolean fire, Level.ExplosionInteraction explosionInteraction, boolean animate, ParticleOptions smallParticles, ParticleOptions largeParticles, SoundEvent soundEvent, CallbackInfoReturnable<Explosion> cir) {
         if (entity instanceof Creeper creeper) {
             creeperFireworks$boom(creeper);
 
@@ -41,7 +47,7 @@ public abstract class MixinLevel {
                 Level level = (Level) (Object) this;
 
                 if (ConfigHandler.Common.disableBlockDamage()) {
-                    Explosion explosion = new Explosion(level, entity, damageSource, damageCalculator, x, y, z, radius, fire, Explosion.BlockInteraction.KEEP);
+                    Explosion explosion = new Explosion(level, entity, damageSource, damageCalculator, x, y, z, radius, fire, Explosion.BlockInteraction.KEEP, smallParticles, largeParticles, soundEvent);
 
                     explosion.explode();
                     explosion.finalizeExplosion(animate);
