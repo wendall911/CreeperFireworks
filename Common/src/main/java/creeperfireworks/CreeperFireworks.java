@@ -24,8 +24,7 @@ public class CreeperFireworks {
             clientConfig.addLoadListener((config, flag) -> ConfigHandler.init());
         }
 
-        SpectreConfig commonConfig = SpectreConfigLoader.add(SpectreConfig.Type.COMMON, ConfigHandler.COMMON_SPEC, MODID);
-        commonConfig.addLoadListener((config, flag) -> ConfigHandler.init());
+        SpectreConfigLoader.add(SpectreConfig.Type.COMMON, ConfigHandler.COMMON_SPEC, MODID);
     }
 
 }

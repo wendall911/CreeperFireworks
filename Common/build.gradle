@@ -32,7 +32,6 @@ sourceSets.main.resources {
 }
 
 processResources {
-
     filesMatching("pack.mcmeta") {
         expand 'mod_name': project.mod_name
     }
