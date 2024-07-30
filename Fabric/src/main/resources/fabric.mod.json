@@ -20,7 +20,7 @@
     "client": [
       "creeperfireworks.CreeperFireworksFabricClient"
     ],
-    "spectrelib": [
+    "spectrelib-config": [
       "creeperfireworks.FabricConfigInitializer"
     ]
   },

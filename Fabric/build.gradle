@@ -50,10 +50,6 @@ loom {
     }
 }
 
-sourceSets.main.resources {
-    srcDir 'src/generated/resources'
-}
-
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
 
 task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
@@ -61,12 +57,13 @@ task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
         apiToken = project.cfcurseApiKey
         def mainFile = upload(project.cfcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
         mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion('Java 17')
+        mainFile.addJavaVersion("Java ${java_version}")
         mainFile.addModLoader('Fabric')
         mainFile.releaseType = "${release_type}"
         "${release_versions}".split(',').each {
             mainFile.addGameVersion("${it}")
         }
+        mainFile.addRequirement('fabric-api')
         mainFile.addOptional('creeper-overhaul')
     }
 }
@@ -83,6 +80,7 @@ modrinth {
         uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
         gameVersions = "${release_versions}".split(",") as List<String>
         dependencies {
+            required.project 'fabric-api'
             optional.project 'creeper-overhaul'
         }
     }

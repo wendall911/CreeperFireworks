@@ -26,7 +26,7 @@ repositories {
         }
         filter { includeGroupAndSubgroups("org.spongepowered") }
     }
-   
+
     maven {
         name = 'ParchmentMC'
         url = 'https://maven.parchmentmc.org/'
@@ -116,7 +116,7 @@ processResources {
         'neoforge_mc_version_range': neoforge_mc_version_range
     ]
 
-    filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', '*.mixins.json']) {
+    filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {
         expand expandProps
     }
     inputs.properties(expandProps)

@@ -36,12 +36,8 @@ dependencies {
     jarJar group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-neoforge', version: "${spectrelib_version}+${minecraft_version}"
 
     // Testing mods
-    runtimeOnly "curse.maven:configured-457570:5180902"
-    runtimeOnly "curse.maven:catalogue-459701:4766090"
-}
-
-sourceSets.main.resources {
-    srcDir 'src/generated/resources'
+    runtimeOnly "curse.maven:configured-457570:5340194"
+    runtimeOnly "curse.maven:catalogue-459701:5303328"
 }
 
 tasks.jarJar.configure {
@@ -80,12 +76,13 @@ task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
         apiToken = project.cfcurseApiKey
         def mainFile = upload(project.cfcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
         mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion('Java 17')
+        mainFile.addJavaVersion("Java ${java_version}")
         mainFile.addModLoader('NeoForge')
         mainFile.releaseType = "${release_type}"
         "${release_versions}".split(',').each {
             mainFile.addGameVersion("${it}")
         }
+        mainFile.addOptional('configured')
         mainFile.addOptional('catalogue')
         mainFile.addOptional('creeper-overhaul')
     }

@@ -9,7 +9,9 @@ import java.util.stream.Stream;
 
 import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec;
 
-import net.minecraft.world.item.FireworkRocketItem;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import net.minecraft.world.item.component.FireworkExplosion;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -45,14 +47,15 @@ public class ConfigHandler {
 
         private static final String[] colorStrings = new String[]{"#3B511A", "#41CD34"};
         private static final List<String> colorsList = List.of("colors");
-        private static final List<Integer> decodedColors = new ArrayList<>();
+        private static final IntList decodedColors = new IntArrayList();
         private static final Predicate<Object> hexValidator = s -> s instanceof String
             && ((String) s).matches("#[a-zA-Z\\d]{6}");
-        private static final List<String> shapes = Stream.of(FireworkRocketItem.Shape.values()).map(Enum::name).toList();
+        private static final List<String> shapes = Stream.of(FireworkExplosion.Shape.values()).map(Enum::name).toList();
 
         private final SpectreConfigSpec.IntValue fireworksChance;
         private final SpectreConfigSpec.ConfigValue<List<? extends String>> fireworksColors;
         private final SpectreConfigSpec.BooleanValue fireworksFlicker;
+        private final SpectreConfigSpec.BooleanValue fireworksTrail;
         private final SpectreConfigSpec.ConfigValue<String> fireworksShape;
         private final SpectreConfigSpec.IntValue fireworksHeight;
 
@@ -69,6 +72,9 @@ public class ConfigHandler {
             fireworksFlicker = builder
                 .comment("Fireworks flicker.")
                 .define("fireworksFlicker", true);
+            fireworksTrail = builder
+                .comment("Fireworks trail.")
+                .define("fireworksTrail", true);
             fireworksShape = builder
                 .comment("Fireworks shape. One of: " + shapes)
                 .defineInList("fireworksShape", "CREEPER", shapes);
@@ -81,7 +87,7 @@ public class ConfigHandler {
             return CLIENT.fireworksChance.get();
         }
 
-        public static List<Integer> getColorsList() {
+        public static IntList getColorsList() {
             return Client.decodedColors;
         }
 
@@ -89,8 +95,12 @@ public class ConfigHandler {
             return CLIENT.fireworksFlicker.get();
         }
 
-        public static int getFireworksShape() {
-            return FireworkRocketItem.Shape.valueOf(CLIENT.fireworksShape.get()).getId();
+        public static boolean fireworksTrail() {
+            return CLIENT.fireworksTrail.get();
+        }
+
+        public static FireworkExplosion.Shape getFireworksShape() {
+            return FireworkExplosion.Shape.valueOf(CLIENT.fireworksShape.get());
         }
 
         public static float getFireworksHeight() {

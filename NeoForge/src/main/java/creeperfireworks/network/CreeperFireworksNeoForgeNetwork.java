@@ -3,7 +3,7 @@ package creeperfireworks.network;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import creeperfireworks.util.FireworksHelper;
 
@@ -15,8 +15,8 @@ public class CreeperFireworksNeoForgeNetwork {
         return INSTANCE;
     }
 
-    public void handleFireworksPacket(LaunchFireworksPacket msg, PlayPayloadContext ctx) {
-        ctx.workHandler().submitAsync(() -> {
+    public void handleFireworksPacket(LaunchFireworksPacket msg, IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
             ClientLevel level = Minecraft.getInstance().level;
 
             if (level != null) {

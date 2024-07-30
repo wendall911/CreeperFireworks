@@ -1,14 +1,15 @@
 package creeperfireworks;
 
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.resources.ResourceLocation;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+
+import creeperfireworks.network.LaunchFireworksPacket;
 
 public class CreeperFireworksFabric implements ModInitializer {
 
-    public static ResourceLocation LAUNCH_FIREWORKS = new ResourceLocation(CreeperFireworks.MODID, "launch_fireworks");
-
 	@Override
     public void onInitialize() {
+        PayloadTypeRegistry.playS2C().register(LaunchFireworksPacket.TYPE, LaunchFireworksPacket.STREAM_CODEC);
     }
 
 }
