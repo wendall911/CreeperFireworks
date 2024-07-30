@@ -25,7 +25,7 @@
     ]
   },
   "mixins": [
-    "creeperfireworks.mixins.json"
+    "creeperfireworks.fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": "${fabric_loader_min_version}",
