@@ -54,6 +54,7 @@ public class ConfigHandler {
         private final SpectreConfigSpec.ConfigValue<List<? extends String>> fireworksColors;
         private final SpectreConfigSpec.BooleanValue fireworksFlicker;
         private final SpectreConfigSpec.ConfigValue<String> fireworksShape;
+        private final SpectreConfigSpec.IntValue fireworksHeight;
 
         public Client(SpectreConfigSpec.Builder builder) {
             builder.push("visuals");
@@ -71,6 +72,9 @@ public class ConfigHandler {
             fireworksShape = builder
                 .comment("Fireworks shape. One of: " + shapes)
                 .defineInList("fireworksShape", "CREEPER", shapes);
+            fireworksHeight = builder
+                .comment("Height above creeper that fireworks explode. Default 5")
+                .defineInRange("fireworksHeight", 5, 0, 32);
         }
 
         public static int fireworksChance() {
@@ -87,6 +91,10 @@ public class ConfigHandler {
 
         public static int getFireworksShape() {
             return FireworkRocketItem.Shape.valueOf(CLIENT.fireworksShape.get()).getId();
+        }
+
+        public static float getFireworksHeight() {
+            return (float) CLIENT.fireworksHeight.get();
         }
 
         private static Supplier<List<? extends String>> getColors() {

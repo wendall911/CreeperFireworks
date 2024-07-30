@@ -21,7 +21,7 @@ public class FireworksHelper {
                 new FireworkParticles.Starter(
                     level,
                     location.x(),
-                    location.y() + 5.0F,
+                    location.y() + ConfigHandler.Client.getFireworksHeight(),
                     location.z(),
                     0, 0, 0,
                     particleEngine,
