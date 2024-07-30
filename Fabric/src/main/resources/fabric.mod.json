@@ -17,6 +17,9 @@
     "main": [
       "creeperfireworks.CreeperFireworksFabric"
     ],
+    "client": [
+      "creeperfireworks.CreeperFireworksFabricClient"
+    ],
     "spectrelib": [
       "creeperfireworks.FabricConfigInitializer"
     ]
