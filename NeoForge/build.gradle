@@ -1,48 +1,52 @@
 plugins {
     id 'multiloader-loader'
-    id 'net.neoforged.gradle.userdev'
-    id 'net.darkhax.curseforgegradle'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
-    id 'com.modrinth.minotaur'
+    id 'net.neoforged.moddev'
+    id 'io.github.goooler.shadow'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 }
 
 archivesBaseName = "${mod_id}"
 version = neoforge_mod_version
 
-runs {
-    configureEach {
-        modSource project.sourceSets.main
-    }
-    client {
-        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-    }
-    server {
-        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
-    }
-}
-
-subsystems {
+neoForge {
+    version = neoforge_version
     parchment {
-        minecraftVersion = "${parchment_mc_version}"
-        mappingsVersion = "${parchment_version}"
+        minecraftVersion = parchment_mc_version
+        mappingsVersion = parchment_version
+    }
+    runs {
+        configureEach {
+            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+        }
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
     }
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neoforge_version}"
-
     implementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-neoforge', version: "${spectrelib_version}+${minecraft_version}"
     jarJar group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-neoforge', version: "${spectrelib_version}+${minecraft_version}"
 
     // Testing mods
-    runtimeOnly "curse.maven:configured-457570:5340194"
-    runtimeOnly "curse.maven:catalogue-459701:5303328"
+    //runtimeOnly "curse.maven:configured-457570:5441232"
+    //runtimeOnly "curse.maven:catalogue-459701:5441227"
 }
 
-tasks.jarJar.configure {
-    archiveClassifier.set("")
+shadowJar {
+    archiveClassifier = ''
 }
+
+tasks.register('idePostSync') {}
 
 task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     file = new File(project(":").projectDir.toString() + '/build/libs/changelog.txt');

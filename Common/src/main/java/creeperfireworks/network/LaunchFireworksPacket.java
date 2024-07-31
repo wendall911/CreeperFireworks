@@ -1,6 +1,7 @@
 package creeperfireworks.network;
 
-import creeperfireworks.platform.Services;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,12 +14,12 @@ import creeperfireworks.CreeperFireworks;
 
 public record LaunchFireworksPacket(Vector3f location) implements CustomPacketPayload {
 
-    public static final Type<LaunchFireworksPacket> TYPE = new Type<>(new ResourceLocation(CreeperFireworks.MODID, "launch_fireworks"));
+    public static final Type<LaunchFireworksPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(CreeperFireworks.MODID, "launch_fireworks"));
     public static final StreamCodec<FriendlyByteBuf, LaunchFireworksPacket> STREAM_CODEC =
         StreamCodec.composite(
-                ByteBufCodecs.VECTOR3F,
-                LaunchFireworksPacket::location,
-                LaunchFireworksPacket::new
+            ByteBufCodecs.VECTOR3F,
+            LaunchFireworksPacket::location,
+            LaunchFireworksPacket::new
         );
 
     public static void handle(Vector3f location) {
@@ -26,7 +27,7 @@ public record LaunchFireworksPacket(Vector3f location) implements CustomPacketPa
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public @NotNull Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 

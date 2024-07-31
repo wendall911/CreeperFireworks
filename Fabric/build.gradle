@@ -1,8 +1,6 @@
 plugins {
     id 'multiloader-loader'
     id 'fabric-loom'
-    id 'net.darkhax.curseforgegradle'
-    id 'com.modrinth.minotaur'
 }
 
 version = fabric_mod_version
@@ -25,8 +23,6 @@ dependencies {
         transitive = false
     }
 
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-
     include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}+${minecraft_version}"
 
     // Testing Mods
@@ -34,6 +30,9 @@ dependencies {
 }
 
 loom {
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
     runs {
         client {
             client()
