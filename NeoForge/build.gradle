@@ -195,6 +195,7 @@ publishMods {
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
+            embeds('spectrelib')
             optional('catalogue')
             optional('creeper-overhaul')
         }
