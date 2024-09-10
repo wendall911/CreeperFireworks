@@ -4,9 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin'
-    id 'net.darkhax.curseforgegradle'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
-    id 'com.modrinth.minotaur'
     id 'me.modmuss50.mod-publish-plugin'
 }
 
@@ -181,43 +179,10 @@ tasks.generateUpdates.mustRunAfter('jar')
 tasks.build.dependsOn('changelog', 'generateUpdates')
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
-
-task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
-    if (project.hasProperty('cfcurseApiKey')) {
-        apiToken = project.cfcurseApiKey
-        def mainFile = upload(project.cfcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
-        mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion('Java 17')
-        mainFile.addModLoader('Forge', 'NeoForge')
-        mainFile.releaseType = "${release_type}"
-        "${release_versions}".split(',').each {
-            mainFile.addGameVersion("${it}")
-        }
-        mainFile.addOptional('catalogue')
-        mainFile.addOptional('creeper-overhaul')
-    }
-}
-
-modrinth {
-    if (project.hasProperty('cfModrinthId')) {
-        token = project.modrinthKey
-        projectId = project.cfModrinthId
-        version = getVersion()
-        versionType = "${release_type}"
-        if (file(changelogFile).exists()) {
-            changelog = file(changelogFile).text
-        }
-        uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
-        gameVersions = "${release_versions}".split(",") as List<String>
-        loaders = ['neoforge', 'forge']
-        dependencies {
-            optional.project 'creeper-overhaul'
-        }
-    }
-}
+def publishFile = project(":").projectDir.toString() + "/NeoForge/build/libs/${archivesBaseName}-${version}.jar"
 
 publishMods {
-    file = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
+    file = file(publishFile)
     changelog = file(changelogFile).text
     type = STABLE
     modLoaders.addAll(['neoforge', 'forge'])
@@ -226,7 +191,7 @@ publishMods {
         curseforge {
             accessToken = project.cfcurseApiKey
             projectId = project.cfcurseId
-            javaVersions.add("${java_version}")
+            javaVersions.add(JavaVersion.toVersion("${java_version}"))
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
