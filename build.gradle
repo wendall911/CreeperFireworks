@@ -5,6 +5,7 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7-SNAPSHOT' apply(false)
     id 'net.darkhax.curseforgegradle' version '1.+' apply(false)
     id 'com.modrinth.minotaur' version '2.+' apply(false)
+    id 'me.modmuss50.mod-publish-plugin' version '0.7.3' apply(false)
 }
 
 allprojects {

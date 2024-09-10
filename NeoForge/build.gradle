@@ -7,6 +7,7 @@ plugins {
     id 'net.darkhax.curseforgegradle'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
     id 'com.modrinth.minotaur'
+    id 'me.modmuss50.mod-publish-plugin'
 }
 
 repositories {
@@ -212,5 +213,35 @@ modrinth {
         dependencies {
             optional.project 'creeper-overhaul'
         }
+    }
+}
+
+publishMods {
+    file = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
+    changelog = file(changelogFile).text
+    type = STABLE
+    modLoaders.addAll(['neoforge', 'forge'])
+
+    if (project.hasProperty('cfcurseApiKey')) {
+        curseforge {
+            accessToken = project.cfcurseApiKey
+            projectId = project.cfcurseId
+            javaVersions.add("${java_version}")
+            clientRequired = true
+            serverRequired = true
+            minecraftVersions.addAll("${release_versions}".split(','))
+            optional('catalogue')
+            optional('creeper-overhaul')
+        }
+    }
+    if (project.hasProperty('cfModrinthId')) {
+        modrinth {
+            accessToken = project.modrinthKey
+            projectId = project.cfModrinthId
+            minecraftVersions.addAll("${release_versions}".split(','))
+            optional('creeper-overhaul')
+        }
+    }
+    if (project.hasProperty('cfGithubToken')) {
     }
 }
