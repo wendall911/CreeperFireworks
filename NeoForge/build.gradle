@@ -1,9 +1,8 @@
 plugins {
     id 'multiloader-loader'
     id 'net.neoforged.gradle.userdev'
-    id 'net.darkhax.curseforgegradle'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
-    id 'com.modrinth.minotaur'
+	id 'me.modmuss50.mod-publish-plugin'
 }
 
 archivesBaseName = "${mod_id}"
@@ -74,37 +73,35 @@ tasks.generateUpdates.mustRunAfter('jar', 'sourcesJar')
 tasks.build.dependsOn('changelog', 'generateUpdates')
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
+def publishFile = project(":").projectDir.toString() + "/NeoForge/build/libs/${archivesBaseName}-${version}.jar"
 
-task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+publishMods {
+    file = file(publishFile)
+    changelog = file(changelogFile).text
+    type = STABLE
+    modLoaders.add('neoforge')
+
     if (project.hasProperty('cfcurseApiKey')) {
-        apiToken = project.cfcurseApiKey
-        def mainFile = upload(project.cfcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
-        mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion('Java 17')
-        mainFile.addModLoader('NeoForge')
-        mainFile.releaseType = "${release_type}"
-        "${release_versions}".split(',').each {
-            mainFile.addGameVersion("${it}")
+        curseforge {
+            accessToken = project.cfcurseApiKey
+            projectId = project.cfcurseId
+            javaVersions.add(JavaVersion.toVersion("${java_version}"))
+            clientRequired = true
+            serverRequired = true
+            minecraftVersions.addAll("${release_versions}".split(','))
+            embeds('spectrelib')
+            optional('catalogue')
+            optional('creeper-overhaul')
         }
-        mainFile.addOptional('catalogue')
-        mainFile.addOptional('creeper-overhaul')
     }
-}
-
-modrinth {
     if (project.hasProperty('cfModrinthId')) {
-        token = project.modrinthKey
-        projectId = project.cfModrinthId
-        version = getVersion()
-        versionType = "${release_type}"
-        if (file(changelogFile).exists()) {
-            changelog = file(changelogFile).text
+        modrinth {
+            accessToken = project.modrinthKey
+            projectId = project.cfModrinthId
+            minecraftVersions.addAll("${release_versions}".split(','))
+            optional('creeper-overhaul')
         }
-        uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
-        gameVersions = "${release_versions}".split(",") as List<String>
-        loaders = ['neoforge']
-        dependencies {
-            optional.project 'creeper-overhaul'
-        }
+    }
+    if (project.hasProperty('cfGithubToken')) {
     }
 }
