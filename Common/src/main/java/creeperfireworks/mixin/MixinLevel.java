@@ -3,15 +3,13 @@ package creeperfireworks.mixin;
 import java.util.List;
 import java.util.function.Predicate;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -20,6 +18,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import creeperfireworks.config.ConfigHandler;
@@ -32,24 +31,35 @@ public abstract class MixinLevel {
      * Limit explosion damage (configurable) to players, items and blocks. Any combination is OK.
      */
     @Inject(
-        method = "explode(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;DDDFZLnet/minecraft/world/level/Level$ExplosionInteraction;ZLnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/core/Holder;)Lnet/minecraft/world/level/Explosion;",
+        method = "explode(Lnet/minecraft/world/entity/Entity;DDDFLnet/minecraft/world/level/Level$ExplosionInteraction;)V",
         at = @At("HEAD"),
         cancellable = true
     )
-    private void cf$explode(Entity entity, DamageSource damageSource, ExplosionDamageCalculator damageCalculator, double x, double y, double z, float radius, boolean fire, Level.ExplosionInteraction explosionInteraction, boolean animate, ParticleOptions smallParticles, ParticleOptions largeParticles, Holder<SoundEvent> soundEvent, CallbackInfoReturnable<Explosion> cir) {
+    private void cf$explode(Entity entity, double x, double y, double z, float radius, Level.ExplosionInteraction explosionInteraction, CallbackInfo ci) {
         if (entity instanceof Creeper creeper) {
             creeperFireworks$boom(creeper);
 
-            if (creeper.getCommandSenderWorld().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
-                Level level = (Level) (Object) this;
+            Level level = (Level) (Object) this;
 
-                if (ConfigHandler.Common.disableBlockDamage()) {
-                    Explosion explosion = new Explosion(level, entity, damageSource, damageCalculator, x, y, z, radius, fire, Explosion.BlockInteraction.KEEP, smallParticles, largeParticles, soundEvent);
-
-                    explosion.explode();
-                    explosion.finalizeExplosion(animate);
-
-                    cir.setReturnValue(explosion);
+            if (creeper.getCommandSenderWorld() instanceof ServerLevel serverLevel) {
+                if (serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+                    if (ConfigHandler.Common.disableBlockDamage()) {
+                        level.explode(
+                            entity,
+                            Explosion.getDefaultDamageSource(level, entity),
+                            null,
+                            x,
+                            y,
+                            z,
+                            radius,
+                            false,
+                            Level.ExplosionInteraction.NONE,
+                            ParticleTypes.EXPLOSION,
+                            ParticleTypes.EXPLOSION_EMITTER,
+                            SoundEvents.GENERIC_EXPLODE
+                        );
+                        ci.cancel();
+                    }
                 }
             }
         }
