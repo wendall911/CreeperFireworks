@@ -16,10 +16,6 @@ Configurable Options:
     - Firework shape
     - Height above creeper explosion to launch firework
 
-All Downloads:
-
-[![Files](https://curse.nikky.moe/api/img/1071230/files?logo)](https://minecraft.curseforge.com/projects/1071230/files)
-
 ## Links of Interest
 
 + [CreeperFireworks Curseforge Page](https://www.curseforge.com/minecraft/mc-mods/creeper-fireworks)
