@@ -41,8 +41,10 @@ public abstract class MixinLevel {
 
             Level level = (Level) (Object) this;
 
-            if (creeper.getCommandSenderWorld() instanceof ServerLevel serverLevel) {
-                if (serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            if (creeper.getServer() != null) {
+                ServerLevel serverLevel = creeper.getServer().getLevel(level.dimension());
+
+                if (serverLevel != null && serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
                     if (ConfigHandler.Common.disableBlockDamage()) {
                         level.explode(
                             entity,
