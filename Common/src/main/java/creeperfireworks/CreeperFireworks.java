@@ -2,14 +2,15 @@ package creeperfireworks;
 
 import java.util.Random;
 
-import com.illusivesoulworks.spectrelib.config.SpectreConfig;
-import com.illusivesoulworks.spectrelib.config.SpectreConfigLoader;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import technology.roughness.whitenoise.config.WhiteNoiseConfig;
+import technology.roughness.whitenoise.config.WhiteNoiseConfigLoader;
+
+import technology.roughness.whitenoise.platform.Services;
+
 import creeperfireworks.config.ConfigHandler;
-import creeperfireworks.platform.Services;
 
 public class CreeperFireworks {
 
@@ -20,11 +21,11 @@ public class CreeperFireworks {
 
     public static void init() {
         if (Services.PLATFORM.isPhysicalClient()) {
-            SpectreConfig clientConfig = SpectreConfigLoader.add(SpectreConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC, MODID);
+            WhiteNoiseConfig clientConfig = WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC, MODID);
             clientConfig.addLoadListener((config, flag) -> ConfigHandler.init());
         }
 
-        SpectreConfigLoader.add(SpectreConfig.Type.COMMON, ConfigHandler.COMMON_SPEC, MODID);
+        WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.COMMON, ConfigHandler.COMMON_SPEC, MODID);
     }
 
 }

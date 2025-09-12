@@ -10,6 +10,7 @@ import creeperfireworks.network.CreeperFireworksNeoForgeNetwork;
 @Mod(CreeperFireworks.MODID)
 public class CreeperFireworksNeoForge {
 
+    @SuppressWarnings("removal")
     public CreeperFireworksNeoForge() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -22,4 +23,3 @@ public class CreeperFireworksNeoForge {
     }
 
 }
-
