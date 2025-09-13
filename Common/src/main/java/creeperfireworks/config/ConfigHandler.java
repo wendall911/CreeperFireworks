@@ -1,33 +1,33 @@
 package creeperfireworks.config;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec;
-
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
+
 import net.minecraft.world.item.component.FireworkExplosion;
 
 import org.apache.commons.lang3.tuple.Pair;
+
+import technology.roughness.whitenoise.config.WhiteNoiseConfigSpec;
 
 import creeperfireworks.util.ColorHelper;
 
 public class ConfigHandler {
 
-    public static final SpectreConfigSpec CLIENT_SPEC;
-    public static final SpectreConfigSpec COMMON_SPEC;
+    public static final WhiteNoiseConfigSpec CLIENT_SPEC;
+    public static final WhiteNoiseConfigSpec COMMON_SPEC;
 
     private static final Client CLIENT;
     private static final Common COMMON;
 
     static {
-        final Pair<Client, SpectreConfigSpec> specPairClient = new SpectreConfigSpec.Builder().configure(Client::new);
-        final Pair<Common, SpectreConfigSpec> specPairCommon = new SpectreConfigSpec.Builder().configure(Common::new);
+        final Pair<Client, WhiteNoiseConfigSpec> specPairClient = new WhiteNoiseConfigSpec.Builder().configure(Client::new);
+        final Pair<Common, WhiteNoiseConfigSpec> specPairCommon = new WhiteNoiseConfigSpec.Builder().configure(Common::new);
 
         CLIENT_SPEC = specPairClient.getRight();
         CLIENT = specPairClient.getLeft();
@@ -52,14 +52,14 @@ public class ConfigHandler {
             && ((String) s).matches("#[a-zA-Z\\d]{6}");
         private static final List<String> shapes = Stream.of(FireworkExplosion.Shape.values()).map(Enum::name).toList();
 
-        private final SpectreConfigSpec.IntValue fireworksChance;
-        private final SpectreConfigSpec.ConfigValue<List<? extends String>> fireworksColors;
-        private final SpectreConfigSpec.BooleanValue fireworksFlicker;
-        private final SpectreConfigSpec.BooleanValue fireworksTrail;
-        private final SpectreConfigSpec.ConfigValue<String> fireworksShape;
-        private final SpectreConfigSpec.IntValue fireworksHeight;
+        private final WhiteNoiseConfigSpec.IntValue fireworksChance;
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> fireworksColors;
+        private final WhiteNoiseConfigSpec.BooleanValue fireworksFlicker;
+        private final WhiteNoiseConfigSpec.BooleanValue fireworksTrail;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> fireworksShape;
+        private final WhiteNoiseConfigSpec.IntValue fireworksHeight;
 
-        public Client(SpectreConfigSpec.Builder builder) {
+        public Client(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("visuals");
 
             fireworksChance = builder
@@ -115,10 +115,10 @@ public class ConfigHandler {
 
     public static class Common {
 
-        private final SpectreConfigSpec.BooleanValue disableBlockDamage;
-        private final SpectreConfigSpec.BooleanValue disableItemDamage;
+        private final WhiteNoiseConfigSpec.BooleanValue disableBlockDamage;
+        private final WhiteNoiseConfigSpec.BooleanValue disableItemDamage;
 
-        public Common(SpectreConfigSpec.Builder builder) {
+        public Common(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("general");
 
             disableBlockDamage = builder.comment("Disable block damage on Creeper explosion.")
