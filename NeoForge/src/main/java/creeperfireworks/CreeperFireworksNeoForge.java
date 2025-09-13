@@ -12,7 +12,7 @@ import creeperfireworks.network.LaunchFireworksPacket;
 public class CreeperFireworksNeoForge {
 
     public CreeperFireworksNeoForge(IEventBus eventBus) {
-        CreeperFireworks.init();
+        CreeperFireworks.initConfig();
         eventBus.addListener(this::registerPayloadHandler);
     }
 
