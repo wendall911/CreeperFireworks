@@ -24,6 +24,7 @@ neoForge {
         }
         server {
             server()
+            programArgument '--nogui'
         }
     }
     mods {
@@ -34,8 +35,8 @@ neoForge {
 }
 
 dependencies {
-    implementation group: 'technology.roughness.whitenoise', name: 'whitenoise-neoforge', version: "${whitenoise_version}"
-    jarJar group: 'technology.roughness.whitenoise', name: 'whitenoise-neoforge', version: "${whitenoise_version}"
+    implementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-neoforge", version: "${whitenoise_version}"
+    jarJar group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-neoforge", version: "${whitenoise_version}"
 
     // Testing mods
     //runtimeOnly "curse.maven:configured-457570:5441232"
@@ -45,8 +46,6 @@ dependencies {
 shadowJar {
     archiveClassifier = ''
 }
-
-tasks.register('idePostSync') {}
 
 task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     file.set(new File(project(":").projectDir.toString() + '/build/libs/changelog.txt'));
