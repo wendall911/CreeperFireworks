@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 
 import creeperfireworks.util.FireworksHelper;
 
-public class CreeperFireworksFabricClient implements ClientModInitializer {
+public class CreeperFireworksClientFabric implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
