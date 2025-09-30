@@ -9,7 +9,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import creeperfireworks.network.LaunchFireworksPacket;
 import creeperfireworks.util.FireworksHelper;
 
-public class CreeperFireworksFabricClient implements ClientModInitializer {
+public class CreeperFireworksClientFabric implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
