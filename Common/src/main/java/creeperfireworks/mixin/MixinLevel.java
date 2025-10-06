@@ -3,9 +3,11 @@ package creeperfireworks.mixin;
 import java.util.List;
 import java.util.function.Predicate;
 
+import net.minecraft.core.particles.ExplosionParticleInfo;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
@@ -14,7 +16,9 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,6 +30,10 @@ import creeperfireworks.platform.Services;
 
 @Mixin(Level.class)
 public abstract class MixinLevel {
+
+    @Shadow
+    @Final
+    private static WeightedList<ExplosionParticleInfo> DEFAULT_EXPLOSION_BLOCK_PARTICLES;
 
     /*
      * Limit explosion damage (configurable) to players, items and blocks. Any combination is OK.
@@ -41,8 +49,8 @@ public abstract class MixinLevel {
 
             Level level = (Level) (Object) this;
 
-            if (creeper.getServer() != null) {
-                ServerLevel serverLevel = creeper.getServer().getLevel(level.dimension());
+            if (level.getServer() != null) {
+                ServerLevel serverLevel = level.getServer().getLevel(level.dimension());
 
                 if (serverLevel != null && serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
                     if (ConfigHandler.Common.disableBlockDamage()) {
@@ -58,6 +66,7 @@ public abstract class MixinLevel {
                             Level.ExplosionInteraction.NONE,
                             ParticleTypes.EXPLOSION,
                             ParticleTypes.EXPLOSION_EMITTER,
+                            DEFAULT_EXPLOSION_BLOCK_PARTICLES,
                             SoundEvents.GENERIC_EXPLODE
                         );
                         ci.cancel();
