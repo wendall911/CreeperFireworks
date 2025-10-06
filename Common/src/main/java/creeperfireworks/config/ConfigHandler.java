@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import technology.roughness.whitenoise.config.WhiteNoiseConfigSpec;
 
+import creeperfireworks.common.Translations;
 import creeperfireworks.util.ColorHelper;
 
 public class ConfigHandler {
@@ -56,30 +57,32 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> fireworksColors;
         private final WhiteNoiseConfigSpec.BooleanValue fireworksFlicker;
         private final WhiteNoiseConfigSpec.BooleanValue fireworksTrail;
-        private final WhiteNoiseConfigSpec.ConfigValue<String> fireworksShape;
+        private final WhiteNoiseConfigSpec.EnumValue<FireworkExplosion.Shape> fireworksShape;
         private final WhiteNoiseConfigSpec.IntValue fireworksHeight;
 
         public Client(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("visuals");
 
             fireworksChance = builder
-                .comment("Chance of fireworks after creeper explosion.")
+                .comment(getTranslation("fireworkschance"))
                 .defineInRange("fireworksChance", 100, 0, 100);
             fireworksColors = builder
-                .comment("Colors to use in fireworks. Requires hex color. Default: "
-                    + "[\"" + String.join("\", \"", colorStrings) + "\"]")
+                .comment(
+                    getTranslation("colors"),
+                    "Default: [\"" + String.join("\", \"", colorStrings) + "\"]"
+                )
                 .defineListAllowEmpty(colorsList, getColors(), hexValidator);
             fireworksFlicker = builder
-                .comment("Fireworks flicker.")
+                .comment(getTranslation("fireworksflicker"))
                 .define("fireworksFlicker", true);
             fireworksTrail = builder
-                .comment("Fireworks trail.")
+                .comment(getTranslation("fireworkstrail"))
                 .define("fireworksTrail", true);
             fireworksShape = builder
-                .comment("Fireworks shape. One of: " + shapes)
-                .defineInList("fireworksShape", "CREEPER", shapes);
+                .comment(getTranslation("fireworksshape"), "One of: " + shapes)
+                .defineEnum("fireworksShape", FireworkExplosion.Shape.CREEPER);
             fireworksHeight = builder
-                .comment("Height above creeper that fireworks explode. Default 5")
+                .comment(getTranslation("fireworksheight"), "Default 5")
                 .defineInRange("fireworksHeight", 5, 0, 32);
         }
 
@@ -100,7 +103,7 @@ public class ConfigHandler {
         }
 
         public static FireworkExplosion.Shape getFireworksShape() {
-            return FireworkExplosion.Shape.valueOf(CLIENT.fireworksShape.get());
+            return CLIENT.fireworksShape.get();
         }
 
         public static float getFireworksHeight() {
@@ -121,10 +124,12 @@ public class ConfigHandler {
         public Common(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("general");
 
-            disableBlockDamage = builder.comment("Disable block damage on Creeper explosion.")
+            disableBlockDamage = builder
+                .comment(getTranslation("disableblockdamage"))
                 .define("disableBlockDamage", true);
 
-            disableItemDamage = builder.comment("Disable dropped item damage on Creeper explosion.")
+            disableItemDamage = builder
+                .comment(getTranslation("disableitemdamage"))
                 .define("disableItemDamage", true);
         }
 
@@ -136,6 +141,14 @@ public class ConfigHandler {
             return COMMON.disableItemDamage.get();
         }
 
+    }
+
+    private static String getTranslation(String key) {
+        return Translations.get(key);
+    }
+
+    private static String getTranslation(String key, String... values) {
+        return Translations.get(key, values);
     }
 
 }
