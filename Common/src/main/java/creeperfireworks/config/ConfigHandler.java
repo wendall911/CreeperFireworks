@@ -50,7 +50,7 @@ public class ConfigHandler {
         private static final List<String> colorsList = List.of("colors");
         private static final IntList decodedColors = new IntArrayList();
         private static final Predicate<Object> hexValidator = s -> s instanceof String
-            && ((String) s).matches("#[a-zA-Z\\d]{6}");
+            && ((String) s).matches("#[a-fA-F\\d]{6}");
         private static final List<String> shapes = Stream.of(FireworkExplosion.Shape.values()).map(Enum::name).toList();
 
         private final WhiteNoiseConfigSpec.IntValue fireworksChance;
