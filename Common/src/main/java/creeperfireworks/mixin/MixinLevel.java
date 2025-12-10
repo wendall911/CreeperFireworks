@@ -12,8 +12,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.AABB;
 
 import org.spongepowered.asm.mixin.Final;
@@ -52,7 +52,7 @@ public abstract class MixinLevel {
             if (level.getServer() != null) {
                 ServerLevel serverLevel = level.getServer().getLevel(level.dimension());
 
-                if (serverLevel != null && serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+                if (serverLevel != null && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
                     if (ConfigHandler.Common.disableBlockDamage()) {
                         level.explode(
                             entity,
