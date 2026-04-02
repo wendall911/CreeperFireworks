@@ -2,7 +2,7 @@ package creeperfireworks.data;
 
 import java.util.concurrent.CompletableFuture;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 
 import net.minecraft.core.HolderLookup;
@@ -12,7 +12,7 @@ import creeperfireworks.CreeperFireworks;
 
 public class CreeperFireworksLanguageProvider extends FabricLanguageProvider {
 
-    protected CreeperFireworksLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryFuture) {
+    protected CreeperFireworksLanguageProvider(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryFuture) {
         super(dataOutput, "en_us", registryFuture);
     }
 

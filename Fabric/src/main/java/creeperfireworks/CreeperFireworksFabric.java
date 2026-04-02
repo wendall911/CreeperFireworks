@@ -9,7 +9,7 @@ public class CreeperFireworksFabric implements ModInitializer {
 
 	@Override
     public void onInitialize() {
-        PayloadTypeRegistry.playS2C().register(LaunchFireworksPacket.TYPE, LaunchFireworksPacket.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(LaunchFireworksPacket.TYPE, LaunchFireworksPacket.STREAM_CODEC);
     }
 
 }
