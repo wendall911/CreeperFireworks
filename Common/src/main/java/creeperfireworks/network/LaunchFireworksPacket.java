@@ -1,6 +1,6 @@
 package creeperfireworks.network;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,12 +16,12 @@ public record LaunchFireworksPacket(Vector3f location) implements CustomPacketPa
 
     private static StreamCodec<ByteBuf, Vector3f> VECTOR3F = new StreamCodec<>() {
         @Override
-        public void encode(@NotNull ByteBuf buf, @NotNull Vector3f value) {
+        public void encode(@NonNull ByteBuf buf, @NonNull Vector3f value) {
             FriendlyByteBuf.writeVector3f(buf, value);
         }
 
         @Override
-        public @NotNull Vector3f decode(@NotNull ByteBuf buf) {
+        public @NonNull Vector3f decode(@NonNull ByteBuf buf) {
             return FriendlyByteBuf.readVector3f(buf);
         }
     };
@@ -37,7 +37,7 @@ public record LaunchFireworksPacket(Vector3f location) implements CustomPacketPa
     }
 
     @Override
-    public @NotNull Type<? extends CustomPacketPayload> type() {
+    public @NonNull Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
