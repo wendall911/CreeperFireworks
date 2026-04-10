@@ -19,7 +19,7 @@ public class CreeperFireworks {
     public static final Random RANDOM = new Random();
 
     public static void initConfig() {
-        if (Services.PLATFORM.isPhysicalClient()) {
+        if (Services.WN_PLATFORM.isPhysicalClient()) {
             WhiteNoiseConfig clientConfig = WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC, MODID);
             clientConfig.addLoadListener((config, flag) -> ConfigHandler.init());
         }

@@ -15,10 +15,10 @@ dependencies {
     implementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
     include group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
 
-    runtimeOnly group: 'com.terraformersmc', name: 'modmenu', version: "${mod_menu_version}"
+    localRuntime group: 'com.terraformersmc', name: 'modmenu', version: "${mod_menu_version}"
 
     // Testing Mods
-    //modLocalRuntime "curse.maven:mod-XXX:XXX"
+    //localRuntime "curse.maven:mod-XXX:XXX"
 }
 
 loom {
@@ -75,6 +75,8 @@ publishMods {
             optional('betterdays')
             optional('charged-charms')
             optional('homeostatic')
+            optional('homeostatic-seasons')
+            optional('mobchampions')
             optional('simpletextoverlay')
             optional('ready-player-fun')
             optional('creeper-overhaul')
@@ -90,6 +92,8 @@ publishMods {
             optional('betterdays')
             optional('charged-charms')
             optional('homeostatic')
+            optional('homeostatic-seasons')
+            optional('mobchampions')
             optional('simpletextoverlay')
             optional('ready-player-fun')
             optional('creeper-overhaul')
@@ -111,16 +115,9 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId project.group
-            artifactId identifier
+            artifactId "${mod_id}-${minecraft_version}-fabric"
             version project.version
             from components.java
-        }
-    }
-    repositories {
-        if (System.getenv('local_maven') != null) {
-            maven {
-                url 'file://' + System.getenv('local_maven')
-            }
         }
     }
 }
