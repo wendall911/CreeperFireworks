@@ -25,6 +25,8 @@ public class CreeperFireworksLanguageProvider extends FabricLanguageProvider {
         addTranslation(builder, "fireworkstrail");
         addTranslation(builder, "fireworksshape");
         addTranslation(builder, "fireworksheight");
+        addTranslation(builder, "sounds");
+        addTranslation(builder, "fireworkssound");
         addTranslation(builder, "colors");
         addTranslation(builder, "general");
         addTranslation(builder, "disableblockdamage");

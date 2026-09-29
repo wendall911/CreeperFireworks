@@ -59,6 +59,7 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.BooleanValue fireworksTrail;
         private final WhiteNoiseConfigSpec.EnumValue<FireworkExplosion.Shape> fireworksShape;
         private final WhiteNoiseConfigSpec.IntValue fireworksHeight;
+        private final WhiteNoiseConfigSpec.BooleanValue fireworksSound;
 
         public Client(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("visuals");
@@ -84,6 +85,13 @@ public class ConfigHandler {
             fireworksHeight = builder
                 .comment(getTranslation("fireworksheight"), "Default 5")
                 .defineInRange("fireworksHeight", 5, 0, 32);
+
+            builder.pop();
+            builder.push("sounds");
+
+            fireworksSound = builder
+                .comment(getTranslation("fireworkssound"))
+                .define("fireworksSound", true);
         }
 
         public static int fireworksChance() {
@@ -112,6 +120,10 @@ public class ConfigHandler {
 
         private static Supplier<List<? extends String>> getColors() {
             return () -> Arrays.asList(Client.colorStrings);
+        }
+
+        public static boolean isFireworksSoundEnabled() {
+            return CLIENT.fireworksSound.get();
         }
 
     }

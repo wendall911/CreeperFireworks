@@ -30,7 +30,8 @@ public class FireworksHelper {
                     location.z(),
                     0, 0, 0,
                     particleEngine,
-                    getConfiguredFirework()
+                    getConfiguredFirework(),
+                    ConfigHandler.Client.isFireworksSoundEnabled()
                 )
             );
         }

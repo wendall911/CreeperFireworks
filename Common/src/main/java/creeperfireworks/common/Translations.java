@@ -25,6 +25,10 @@ public class Translations {
         translations.put("fireworksshape", "Fireworks shape setting as it relates to Minecraft fireworks.");
         translations.put("fireworksheight.title", "Fireworks Height");
         translations.put("fireworksheight", "Height above creeper that fireworks explode.");
+        translations.put("sounds.title", "Sound Settings");
+        translations.put("sounds", "All settings related to the sound of fireworks when a creeper explodes.");
+        translations.put("fireworkssound.title", "Fireworks Sound");
+        translations.put("fireworkssound", "Enable or disable the sound of fireworks when a creeper explodes.");
         translations.put("colors.title", "Fireworks Colors");
         translations.put("colors", "Colors to use in fireworks. Requires hex formatted colors.");
         translations.put("general.title", "General Settings");
